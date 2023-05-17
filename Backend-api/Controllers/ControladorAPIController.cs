@@ -21,17 +21,7 @@ namespace Backend_api.Controllers
     {
 
         [HttpGet]
-        [Route("private")]
         [Authorize]
-        public IActionResult Private()
-        {
-            return Ok(new
-            {
-                Message = "Hello from a private endpoint! You need to be authenticated to see this."
-            });
-        }
-
-        [HttpGet]
         [Route("api/v1/emisores")]
         public async Task<ActionResult<List<Emisor>>> GetEmisoresAsync()
         {
@@ -57,6 +47,7 @@ namespace Backend_api.Controllers
         }
 
         [HttpPost("login")]
+        [Authorize]
         public async Task<ActionResult> Login(LoginModel login)
         {
             _httpClient.BaseAddress = new Uri("http://apiservicios.ecuasolmovsa.com:3009");
@@ -74,6 +65,7 @@ namespace Backend_api.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         [Route("api/v1/centrocostos")]
         public async Task<ActionResult<List<CentroCostos>>> GetCentroCostosAsync()
         {
@@ -92,6 +84,7 @@ namespace Backend_api.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         [Route("CentroCostosInsert")]
         public async Task<ActionResult> AgregarCentroCostoAsync(int codigoCentroCostos, string descripcionCentroCostos)
         {
@@ -112,6 +105,7 @@ namespace Backend_api.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         [Route("api/centrocostos/delete")]
         public async Task<ActionResult> DeleteCentroCostosAsync(int codigoCentroCostos, string descripcionCentroCostos)
         {
@@ -132,6 +126,7 @@ namespace Backend_api.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         [Route("api/centrocostos/search")]
         public async Task<ActionResult> SearchCentroCostosAsync(string descripcionCentroCostos)
         {
@@ -152,6 +147,7 @@ namespace Backend_api.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         [Route("CentroCostosEdit")]
         public async Task<ActionResult> EditarCentroCostoAsync(int codigoCentroCostos, string descripcionCentroCostos)
         {
@@ -172,6 +168,7 @@ namespace Backend_api.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         [Route("api/GetMovimientosPlanilla")]
         public async Task<ActionResult<string>> GetMovimientosPlanillaAsync()
         {
@@ -190,6 +187,7 @@ namespace Backend_api.Controllers
         }
 
         [HttpGet("loginAutorizador")]
+        [Authorize]
         public async Task<ActionResult> Login(string usuario, string password)
         {
             _httpClient.BaseAddress = new Uri("http://apiservicios.ecuasolmovsa.com:3009");
@@ -207,6 +205,7 @@ namespace Backend_api.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         [Route("MovimientoPlanillaInsert")]
         public async Task<ActionResult> InsertarMovimientoPlanillaAsync(string conceptos, int prioridad, string tipooperacion, int cuenta1, int cuenta2, int cuenta3, int cuenta4, string MovimientoExcepcion1, string MovimientoExcepcion2, string MovimientoExcepcion3, int Traba_Aplica_iess, int Traba_Proyecto_imp_renta, int Aplica_Proy_Renta, int Empresa_Afecta_Iess)
         {
@@ -229,6 +228,7 @@ namespace Backend_api.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         [Route("ObtenerMovimientosExcepcion1y2")]
         public async Task<ActionResult> ObtenerMovimientosExcepcionAsync()
         {
@@ -248,6 +248,7 @@ namespace Backend_api.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         [Route("ObtenerMovimientosExcepcion3")]
         public async Task<ActionResult> ObtenerMovimientosExcepcion3Async()
         {
@@ -267,6 +268,7 @@ namespace Backend_api.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         [Route("GetTipoOperacion")]
         public async Task<ActionResult> GetTipoOperacionAsync()
         {
@@ -286,6 +288,7 @@ namespace Backend_api.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         [Route("GetTrabaAfectaIESS")]
         public async Task<ActionResult> GetTrabaAfectaIessAsync()
         {
@@ -305,6 +308,7 @@ namespace Backend_api.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         [Route("GetTrabAfecImpuestoRenta")]
         public async Task<ActionResult> GetTrabAfecImpuestoRentaAsync()
         {
@@ -324,6 +328,7 @@ namespace Backend_api.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         [Route("api/movimientoPlanilla/delete")]
         public async Task<ActionResult> DeleteMovimientoPlanillaAsync(int codigomovimiento, string descripcionomovimiento)
         {
@@ -344,6 +349,7 @@ namespace Backend_api.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         [Route("api/movimientoPlanilla/edit")]
         public async Task<ActionResult> EditarMovimientoPlanillaAsync(int codigoplanilla, string conceptos, int prioridad, string tipooperacion, int cuenta1, int cuenta2, int cuenta3, int cuenta4, string MovimientoExcepcion1, string MovimientoExcepcion2, string MovimientoExcepcion3, int Traba_Aplica_iess, int Traba_Proyecto_imp_renta, int Aplica_Proy_Renta, int Empresa_Afecta_Iess)
         {
@@ -364,6 +370,7 @@ namespace Backend_api.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         [Route("api/movimientoPlanilla/search")]
         public async Task<ActionResult> SearchMovimientoPlanillasAsync(string concepto)
         {
