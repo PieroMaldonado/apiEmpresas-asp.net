@@ -6,6 +6,7 @@ using System.Net.NetworkInformation;
 using System.Threading.Tasks;
 using System.Web;
 using Backend_api.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -18,6 +19,17 @@ namespace Backend_api.Controllers
     [ApiController]
     public class ControladorAPIController : ControllerBase
     {
+
+        [HttpGet]
+        [Route("private")]
+        [Authorize]
+        public IActionResult Private()
+        {
+            return Ok(new
+            {
+                Message = "Hello from a private endpoint! You need to be authenticated to see this."
+            });
+        }
 
         [HttpGet]
         [Route("api/v1/emisores")]
