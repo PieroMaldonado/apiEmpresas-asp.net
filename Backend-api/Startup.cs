@@ -16,6 +16,9 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using System.Net.Http;
 using System.Web.Http;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace TuNombreDeProyecto
 {
@@ -35,6 +38,21 @@ namespace TuNombreDeProyecto
                 });
             });
 
+            // 1. Add Authentication Services
+            services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+
+            }).AddJwtBearer(options =>
+            {
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidIssuer = "https://dev-0giiekio4xgysadj.us.auth0.com/",
+                    ValidAudience = "https://localhost:7019/",
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("Eh0DgTeI1ikCPdm437CuC7eouyu6gmna"))
+                };
+            });
 
         }
 
@@ -49,6 +67,9 @@ namespace TuNombreDeProyecto
         .AllowCredentials());
 
             app.UseRouting();
+
+            // 2. Enable authentication middleware
+            app.UseAuthentication();
 
             app.UseEndpoints(endpoints =>
             {
