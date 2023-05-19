@@ -29,7 +29,7 @@ namespace TuNombreDeProyecto
                 {
                     builder.AllowAnyHeader()
                            .AllowAnyMethod()
-                           .WithOrigins("http://localhost:62265"); // Reemplazar con la URL de tu aplicación de Angular
+                           .WithOrigins("https://angular-auth0.vercel.app"); // Reemplazar con la URL de tu aplicación de Angular
                 });
             });
 
@@ -41,8 +41,10 @@ namespace TuNombreDeProyecto
             }).AddJwtBearer(options =>
             {
                 options.Authority = "https://dev-0giiekio4xgysadj.us.auth0.com/";
-                options.Audience = "https://localhost:7019";
+                options.Audience = "http://testsapis.somee.com/";
             });
+
+
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
