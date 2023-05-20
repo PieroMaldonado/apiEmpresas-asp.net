@@ -21,16 +21,16 @@ namespace TuNombreDeProyecto
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-            services.AddHttpClient();
 
             services.AddCors(options =>
             {
-                options.AddDefaultPolicy(builder =>
-                {
-                    builder.AllowAnyHeader()
-                           .AllowAnyMethod()
-                           .WithOrigins("https://angular-auth0.vercel.app"); // Reemplazar con la URL de tu aplicación de Angular
-                });
+                options.AddPolicy("AllowSpecificOrigin",
+                    builder =>
+                    {
+                        builder.WithOrigins("https://angular-auth0.vercel.app")
+                            .AllowAnyHeader()
+                            .AllowAnyMethod();
+                    });
             });
 
             // 1. Add Authentication Services
@@ -41,7 +41,7 @@ namespace TuNombreDeProyecto
             }).AddJwtBearer(options =>
             {
                 options.Authority = "https://dev-0giiekio4xgysadj.us.auth0.com/";
-                options.Audience = "http://testsapis.somee.com/";
+                options.Audience = "https://crudempresasapi.azurewebsites.net/";
             });
 
 
@@ -49,10 +49,21 @@ namespace TuNombreDeProyecto
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            if (env.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
+            }
+            else
+            {
+                app.UseExceptionHandler("/Error");
+            }
+
+            app.UseHttpsRedirection();
+
             app.UseRouting();
 
             // Enable CORS
-            app.UseCors();
+            app.UseCors("AllowSpecificOrigin");
 
             // 2. Enable authentication middleware
             app.UseAuthentication();

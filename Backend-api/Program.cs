@@ -11,7 +11,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
         options.Authority = "https://dev-0giiekio4xgysadj.us.auth0.com/";
-        options.Audience = "https://localhost:7019";
+        options.Audience = "https://crudempresasapi.azurewebsites.net/";
     });
 
 // Add Swagger/OpenAPI configuration
@@ -23,10 +23,9 @@ var app = builder.Build();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    
+    app.UseSwagger();
+    app.UseSwaggerUI();
 }
-app.UseSwagger();
-app.UseSwaggerUI();
 
 app.UseHttpsRedirection();
 
