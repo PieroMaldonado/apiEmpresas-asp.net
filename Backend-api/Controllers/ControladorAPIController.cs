@@ -65,8 +65,8 @@ namespace Backend_api.Controllers
         }
 
         [HttpGet]
-        [Authorize]
         [Route("api/v1/centrocostos")]
+        [Authorize(Policy = "ReadAccess")]
         public async Task<ActionResult<List<CentroCostos>>> GetCentroCostosAsync()
         {
             var httpClient = new HttpClient();
@@ -84,8 +84,8 @@ namespace Backend_api.Controllers
         }
 
         [HttpGet]
-        [Authorize]
         [Route("CentroCostosInsert")]
+        [Authorize(Policy = "WriteAccess")]
         public async Task<ActionResult> AgregarCentroCostoAsync(int codigoCentroCostos, string descripcionCentroCostos)
         {
             Console.WriteLine("El valor de codigoCentroCostos es: " + codigoCentroCostos);

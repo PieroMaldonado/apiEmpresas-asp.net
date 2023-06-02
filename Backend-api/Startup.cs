@@ -44,6 +44,15 @@ namespace TuNombreDeProyecto
                 options.Audience = "https://crudempresasapi.azurewebsites.net/";
             });
 
+            // Configure authorization policies     
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("WriteAccess", policy =>
+                                  policy.RequireClaim("permissions", "create:centrocostos"));
+                options.AddPolicy("ReadAccess", policy =>
+                                  policy.RequireClaim("permissions", "read:centrocostos"));
+            });
+
 
         }
 

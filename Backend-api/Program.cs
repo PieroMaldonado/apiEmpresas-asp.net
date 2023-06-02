@@ -14,6 +14,14 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         options.Audience = "https://crudempresasapi.azurewebsites.net/";
     });
 
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("WriteAccess", policy =>
+                      policy.RequireClaim("permissions", "create:centrocostos"));
+    options.AddPolicy("ReadAccess", policy =>
+                      policy.RequireClaim("permissions", "read:centrocostos"));
+});
+
 // Add Swagger/OpenAPI configuration
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
