@@ -48,9 +48,11 @@ namespace TuNombreDeProyecto
             services.AddAuthorization(options =>
             {
                 options.AddPolicy("WriteAccess", policy =>
-                                  policy.RequireClaim("permissions", "create:centrocostos"));
+                                  policy.RequireClaim("permissions", "create:centrocostos", "create:movimientoplanilla", "update:centrocostos", "update:movimientoplanilla"));
                 options.AddPolicy("ReadAccess", policy =>
-                                  policy.RequireClaim("permissions", "read:centrocostos"));
+                                  policy.RequireClaim("permissions", "read:centrocostos", "read:movimientoplanilla", "search:centrocostos", "search:movimientoplanilla"));
+                options.AddPolicy("DeleteAccess", policy =>
+                          policy.RequireClaim("permissions", "delete:centrocostos", "delete:movimientoplanilla"));
             });
 
 

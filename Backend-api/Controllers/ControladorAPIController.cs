@@ -105,8 +105,8 @@ namespace Backend_api.Controllers
         }
 
         [HttpGet]
-        [Authorize]
         [Route("api/centrocostos/delete")]
+        [Authorize(Policy = "DeleteAccess")]
         public async Task<ActionResult> DeleteCentroCostosAsync(int codigoCentroCostos, string descripcionCentroCostos)
         {
             Console.WriteLine("El valor de codigoCentroCostos es: " + codigoCentroCostos);
@@ -126,8 +126,8 @@ namespace Backend_api.Controllers
         }
 
         [HttpGet]
-        [Authorize]
         [Route("api/centrocostos/search")]
+        [Authorize(Policy = "ReadAccess")]
         public async Task<ActionResult> SearchCentroCostosAsync(string descripcionCentroCostos)
         {
             Console.WriteLine("El valor de descripcion es: " + descripcionCentroCostos);
@@ -147,8 +147,8 @@ namespace Backend_api.Controllers
         }
 
         [HttpGet]
-        [Authorize]
         [Route("CentroCostosEdit")]
+        [Authorize(Policy = "WriteAccess")]
         public async Task<ActionResult> EditarCentroCostoAsync(int codigoCentroCostos, string descripcionCentroCostos)
         {
             Console.WriteLine("El valor de codigoCentroCostos es: " + codigoCentroCostos);
@@ -168,8 +168,8 @@ namespace Backend_api.Controllers
         }
 
         [HttpGet]
-        [Authorize]
         [Route("api/GetMovimientosPlanilla")]
+        [Authorize(Policy = "ReadAccess")]
         public async Task<ActionResult<string>> GetMovimientosPlanillaAsync()
         {
             var httpClient = new HttpClient();
@@ -205,8 +205,8 @@ namespace Backend_api.Controllers
         }
 
         [HttpGet]
-        [Authorize]
         [Route("MovimientoPlanillaInsert")]
+        [Authorize(Policy = "WriteAccess")]
         public async Task<ActionResult> InsertarMovimientoPlanillaAsync(string conceptos, int prioridad, string tipooperacion, int cuenta1, int cuenta2, int cuenta3, int cuenta4, string MovimientoExcepcion1, string MovimientoExcepcion2, string MovimientoExcepcion3, int Traba_Aplica_iess, int Traba_Proyecto_imp_renta, int Aplica_Proy_Renta, int Empresa_Afecta_Iess)
         {
             Console.WriteLine("El valor de conceptos es: " + conceptos);
@@ -328,8 +328,8 @@ namespace Backend_api.Controllers
         }
 
         [HttpGet]
-        [Authorize]
         [Route("api/movimientoPlanilla/delete")]
+        [Authorize(Policy = "WriteAccess")]
         public async Task<ActionResult> DeleteMovimientoPlanillaAsync(int codigomovimiento, string descripcionomovimiento)
         {
             Console.WriteLine("El valor de codigo es: " + codigomovimiento);
@@ -349,8 +349,8 @@ namespace Backend_api.Controllers
         }
 
         [HttpGet]
-        [Authorize]
         [Route("api/movimientoPlanilla/edit")]
+        [Authorize(Policy = "WriteAccess")]
         public async Task<ActionResult> EditarMovimientoPlanillaAsync(int codigoplanilla, string conceptos, int prioridad, string tipooperacion, int cuenta1, int cuenta2, int cuenta3, int cuenta4, string MovimientoExcepcion1, string MovimientoExcepcion2, string MovimientoExcepcion3, int Traba_Aplica_iess, int Traba_Proyecto_imp_renta, int Aplica_Proy_Renta, int Empresa_Afecta_Iess)
         {
             Console.WriteLine("El valor de codigoMovimientoPlanilla es: " + codigoplanilla);
@@ -370,8 +370,8 @@ namespace Backend_api.Controllers
         }
 
         [HttpGet]
-        [Authorize]
         [Route("api/movimientoPlanilla/search")]
+        [Authorize(Policy = "ReadAccess")]
         public async Task<ActionResult> SearchMovimientoPlanillasAsync(string concepto)
         {
             Console.WriteLine("El valor de descripcion es: " + concepto);
