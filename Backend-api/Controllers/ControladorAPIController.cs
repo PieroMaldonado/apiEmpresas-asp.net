@@ -389,5 +389,14 @@ namespace Backend_api.Controllers
                 return BadRequest();
             }
         }
+
+        [HttpGet]
+        [Route("validarCedula")]
+        public IActionResult validarCedula(string cedula)
+        {
+            Console.WriteLine("El valor de la cédula es: " + cedula);
+
+            return Ok(cedula);
+        }
     }
 }
