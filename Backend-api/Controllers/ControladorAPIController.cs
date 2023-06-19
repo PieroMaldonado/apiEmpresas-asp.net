@@ -1,17 +1,10 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
-using System.Net.NetworkInformation;
-using System.Threading.Tasks;
 using System.Web;
 using Backend_api.Models;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using NuGet.Protocol.Plugins;
+using Google.Cloud.Kms.V1;
+using Google.Protobuf;
+using System.Text;
 
 namespace Backend_api.Controllers
 {
@@ -392,11 +385,53 @@ namespace Backend_api.Controllers
 
         [HttpGet]
         [Route("validarCedula")]
-        public IActionResult validarCedula(string cedula)
+        public async Task<ActionResult> validarCedula(string cedula)
         {
-            Console.WriteLine("El valor de la cédula es: " + cedula);
+            //variables de entorno para el servicio de Google Cloud KMS
+            string projectId = Environment.GetEnvironmentVariable("projectId");
+            string locationId = Environment.GetEnvironmentVariable("locationId");
+            string keyRingId = Environment.GetEnvironmentVariable("keyRingId");
+            string keyId = Environment.GetEnvironmentVariable("keyId");
 
-            return Ok(cedula);
+            //Configurar variable de entorno hacia la ruta del .json de las credenciales de Google
+            string credential_path = Environment.GetEnvironmentVariable("credential_path");
+            System.Environment.SetEnvironmentVariable("GOOGLE_APPLICATION_CREDENTIALS", credential_path);
+
+            // Create the client.
+            KeyManagementServiceClient client = KeyManagementServiceClient.Create();
+
+            // Build the key name.
+            CryptoKeyName keyName = new CryptoKeyName(projectId, locationId, keyRingId, keyId);
+
+            // Decodificar la cadena de texto en base64
+            string decodedCedula = HttpUtility.UrlDecode(cedula);
+
+            // Reemplazar los espacios en blanco por el símbolo "+"
+            decodedCedula = decodedCedula.Replace(" ", "+");
+
+            // Call the API.
+            DecryptResponse result = client.Decrypt(keyName, ByteString.CopyFrom(Convert.FromBase64String(decodedCedula)));
+
+            // Get the plaintext. Cryptographic plaintexts and ciphertexts are
+            // always byte arrays.
+            byte[] plaintext = result.Plaintext.ToByteArray();
+
+            // Convertir el valor de plaintext a una cadena
+            string numeroIdentificacion = Encoding.UTF8.GetString(plaintext);
+
+            var httpClient = new HttpClient();
+            var response = await httpClient.GetAsync($"https://srienlinea.sri.gob.ec/sri-registro-civil-servicio-internet/rest/DatosRegistroCivil/existeNumeroIdentificacion?numeroIdentificacion={numeroIdentificacion}");
+
+            if (response.IsSuccessStatusCode)
+            {
+                var content = await response.Content.ReadAsStringAsync();
+                return Ok(content);
+            }
+            else
+            {
+                return BadRequest();
+            }
+
         }
     }
 }
