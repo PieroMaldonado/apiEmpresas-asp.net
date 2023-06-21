@@ -416,22 +416,40 @@ namespace Backend_api.Controllers
             // always byte arrays.
             byte[] plaintext = result.Plaintext.ToByteArray();
 
-            // Convertir el valor de plaintext a una cadena
-            string numeroIdentificacion = Encoding.UTF8.GetString(plaintext);
+            // Convertir el valor de plaintext a un arreglo de caracteres
+            char[] numeroIdentificacion = Encoding.UTF8.GetChars(plaintext);
 
-            var httpClient = new HttpClient();
-            var response = await httpClient.GetAsync($"https://srienlinea.sri.gob.ec/sri-registro-civil-servicio-internet/rest/DatosRegistroCivil/existeNumeroIdentificacion?numeroIdentificacion={numeroIdentificacion}");
+            return Ok(VerificaCedula(numeroIdentificacion));
 
-            if (response.IsSuccessStatusCode)
+
+        }
+
+        private static bool VerificaCedula(char[] validarCedula)
+        {
+            int aux = 0, par = 0, impar = 0, verifi;
+            for (int i = 0; i < 9; i += 2)
             {
-                var content = await response.Content.ReadAsStringAsync();
-                return Ok(content);
+                aux = 2 * int.Parse(validarCedula[i].ToString());
+                if (aux > 9)
+                    aux -= 9;
+                par += aux;
+            }
+            for (int i = 1; i < 9; i += 2)
+            {
+                impar += int.Parse(validarCedula[i].ToString());
+            }
+
+            aux = par + impar;
+            if (aux % 10 != 0)
+            {
+                verifi = 10 - (aux % 10);
             }
             else
-            {
-                return BadRequest();
-            }
-
+                verifi = 0;
+            if (verifi == int.Parse(validarCedula[9].ToString()))
+                return true;
+            else
+                return false;
         }
     }
 }
