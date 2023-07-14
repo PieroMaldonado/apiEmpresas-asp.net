@@ -19,7 +19,7 @@ namespace Backend_api.Controllers
         public async Task<ActionResult<List<Emisor>>> GetEmisoresAsync()
         {
             var httpClient = new HttpClient();
-            var response = await httpClient.GetAsync("http://apiservicios.ecuasolmovsa.com:3009/api/Varios/GetEmisor");
+            var response = await httpClient.GetAsync($"{_apiUrl}/api/Varios/GetEmisor");
 
             if (response.IsSuccessStatusCode)
             {
@@ -33,17 +33,19 @@ namespace Backend_api.Controllers
         }
 
         private readonly HttpClient _httpClient;
+        private readonly string _apiUrl;
 
         public ControladorAPIController(IHttpClientFactory httpClientFactory)
         {
             _httpClient = httpClientFactory.CreateClient();
+            _apiUrl = Environment.GetEnvironmentVariable("API_URL");
         }
 
         [HttpPost("login")]
         [Authorize]
         public async Task<ActionResult> Login(LoginModel login)
         {
-            _httpClient.BaseAddress = new Uri("http://apiservicios.ecuasolmovsa.com:3009");
+            _httpClient.BaseAddress = new Uri(_apiUrl);
 
             var response = await _httpClient.GetAsync($"/api/Usuarios?usuario={login.usuario}&password={login.contrasena}");
             if (response.IsSuccessStatusCode)
@@ -63,7 +65,7 @@ namespace Backend_api.Controllers
         public async Task<ActionResult<List<CentroCostos>>> GetCentroCostosAsync()
         {
             var httpClient = new HttpClient();
-            var response = await httpClient.GetAsync("http://apiservicios.ecuasolmovsa.com:3009/api/Varios/CentroCostosSelect");
+            var response = await httpClient.GetAsync($"{_apiUrl}/api/Varios/CentroCostosSelect");
 
             if (response.IsSuccessStatusCode)
             {
@@ -84,7 +86,7 @@ namespace Backend_api.Controllers
             Console.WriteLine("El valor de codigoCentroCostos es: " + codigoCentroCostos);
 
             var httpClient = new HttpClient();
-            var response = await httpClient.GetAsync($"http://apiservicios.ecuasolmovsa.com:3009/api/Varios/CentroCostosInsert?codigocentrocostos={codigoCentroCostos}&descripcioncentrocostos={descripcionCentroCostos}");
+            var response = await httpClient.GetAsync($"{_apiUrl}/api/Varios/CentroCostosInsert?codigocentrocostos={codigoCentroCostos}&descripcioncentrocostos={descripcionCentroCostos}");
 
             if (response.IsSuccessStatusCode)
             {
@@ -105,7 +107,7 @@ namespace Backend_api.Controllers
             Console.WriteLine("El valor de codigoCentroCostos es: " + codigoCentroCostos);
 
             var httpClient = new HttpClient();
-            var response = await httpClient.GetAsync($"http://apiservicios.ecuasolmovsa.com:3009/api/Varios/CentroCostosDelete?codigocentrocostos={codigoCentroCostos}&descripcioncentrocostos={descripcionCentroCostos}");
+            var response = await httpClient.GetAsync($"{_apiUrl}/api/Varios/CentroCostosDelete?codigocentrocostos={codigoCentroCostos}&descripcioncentrocostos={descripcionCentroCostos}");
 
             if (response.IsSuccessStatusCode)
             {
@@ -126,7 +128,7 @@ namespace Backend_api.Controllers
             Console.WriteLine("El valor de descripcion es: " + descripcionCentroCostos);
 
             var httpClient = new HttpClient();
-            var response = await httpClient.GetAsync($"http://apiservicios.ecuasolmovsa.com:3009/api/Varios/CentroCostosSearch?descripcioncentrocostos={descripcionCentroCostos}");
+            var response = await httpClient.GetAsync($"{_apiUrl}/api/Varios/CentroCostosSearch?descripcioncentrocostos={descripcionCentroCostos}");
 
             if (response.IsSuccessStatusCode)
             {
@@ -147,7 +149,7 @@ namespace Backend_api.Controllers
             Console.WriteLine("El valor de codigoCentroCostos es: " + codigoCentroCostos);
 
             var httpClient = new HttpClient();
-            var response = await httpClient.GetAsync($"http://apiservicios.ecuasolmovsa.com:3009/api/Varios/CentroCostosUpdate?codigocentrocostos={codigoCentroCostos}&descripcioncentrocostos={descripcionCentroCostos}");
+            var response = await httpClient.GetAsync($"{_apiUrl}/api/Varios/CentroCostosUpdate?codigocentrocostos={codigoCentroCostos}&descripcioncentrocostos={descripcionCentroCostos}");
 
             if (response.IsSuccessStatusCode)
             {
@@ -166,7 +168,7 @@ namespace Backend_api.Controllers
         public async Task<ActionResult<string>> GetMovimientosPlanillaAsync()
         {
             var httpClient = new HttpClient();
-            var response = await httpClient.GetAsync("http://apiservicios.ecuasolmovsa.com:3009/api/Varios/MovimientoPlanillaSelect");
+            var response = await httpClient.GetAsync($"{_apiUrl}/api/Varios/MovimientoPlanillaSelect");
 
             if (response.IsSuccessStatusCode)
             {
@@ -183,7 +185,7 @@ namespace Backend_api.Controllers
         [Authorize]
         public async Task<ActionResult> Login(string usuario, string password)
         {
-            _httpClient.BaseAddress = new Uri("http://apiservicios.ecuasolmovsa.com:3009");
+            _httpClient.BaseAddress = new Uri(_apiUrl);
 
             var response = await _httpClient.GetAsync($"/api/Varios/GetAutorizador?usuario={usuario}&password={password}");
             if (response.IsSuccessStatusCode)
@@ -205,7 +207,7 @@ namespace Backend_api.Controllers
             Console.WriteLine("El valor de conceptos es: " + conceptos);
 
             var httpClient = new HttpClient();
-            var url = $"http://apiservicios.ecuasolmovsa.com:3009/api/Varios/MovimientoPlanillaInsert?conceptos={conceptos}&prioridad={prioridad}&tipooperacion={tipooperacion}&cuenta1={cuenta1}&cuenta2={cuenta2}&cuenta3={cuenta3}&cuenta4={cuenta4}&MovimientoExcepcion1={MovimientoExcepcion1}&MovimientoExcepcion2={MovimientoExcepcion2}&MovimientoExcepcion3={MovimientoExcepcion3}&Traba_Aplica_iess={Traba_Aplica_iess}&Traba_Proyecto_imp_renta={Traba_Proyecto_imp_renta}&Aplica_Proy_Renta={Aplica_Proy_Renta}&Empresa_Afecta_Iess={Empresa_Afecta_Iess}";
+            var url = $"{_apiUrl}/api/Varios/MovimientoPlanillaInsert?conceptos={conceptos}&prioridad={prioridad}&tipooperacion={tipooperacion}&cuenta1={cuenta1}&cuenta2={cuenta2}&cuenta3={cuenta3}&cuenta4={cuenta4}&MovimientoExcepcion1={MovimientoExcepcion1}&MovimientoExcepcion2={MovimientoExcepcion2}&MovimientoExcepcion3={MovimientoExcepcion3}&Traba_Aplica_iess={Traba_Aplica_iess}&Traba_Proyecto_imp_renta={Traba_Proyecto_imp_renta}&Aplica_Proy_Renta={Aplica_Proy_Renta}&Empresa_Afecta_Iess={Empresa_Afecta_Iess}";
 
             var response = await httpClient.GetAsync(url);
 
@@ -225,9 +227,10 @@ namespace Backend_api.Controllers
         [Route("ObtenerMovimientosExcepcion1y2")]
         public async Task<ActionResult> ObtenerMovimientosExcepcionAsync()
         {
-            var httpClient = new HttpClient();
-            var url = "http://apiservicios.ecuasolmovsa.com:3009/api/Varios/MovimientosExcepcion1y2";
-            var response = await httpClient.GetAsync(url);
+            var _httpClient = new HttpClient();
+            _httpClient.BaseAddress = new Uri(_apiUrl);
+            var url = "/api/Varios/MovimientosExcepcion1y2";
+            var response = await _httpClient.GetAsync(url);
 
             if (response.IsSuccessStatusCode)
             {
@@ -245,9 +248,10 @@ namespace Backend_api.Controllers
         [Route("ObtenerMovimientosExcepcion3")]
         public async Task<ActionResult> ObtenerMovimientosExcepcion3Async()
         {
-            var httpClient = new HttpClient();
-            var url = "http://apiservicios.ecuasolmovsa.com:3009/api/Varios/MovimientosExcepcion3";
-            var response = await httpClient.GetAsync(url);
+            var _httpClient = new HttpClient();
+            _httpClient.BaseAddress = new Uri(_apiUrl);
+            var url = "/api/Varios/MovimientosExcepcion3";
+            var response = await _httpClient.GetAsync(url);
 
             if (response.IsSuccessStatusCode)
             {
@@ -266,7 +270,8 @@ namespace Backend_api.Controllers
         public async Task<ActionResult> GetTipoOperacionAsync()
         {
             var httpClient = new HttpClient();
-            var url = "http://apiservicios.ecuasolmovsa.com:3009/api/Varios/TipoOperacion";
+            httpClient.BaseAddress = new Uri(_apiUrl);
+            var url = "/api/Varios/TipoOperacion";
             var response = await httpClient.GetAsync(url);
 
             if (response.IsSuccessStatusCode)
@@ -286,7 +291,8 @@ namespace Backend_api.Controllers
         public async Task<ActionResult> GetTrabaAfectaIessAsync()
         {
             var httpClient = new HttpClient();
-            var url = "http://apiservicios.ecuasolmovsa.com:3009/api/Varios/TrabaAfectaIESS";
+            httpClient.BaseAddress = new Uri(_apiUrl);
+            var url = "/api/Varios/TrabaAfectaIESS";
             var response = await httpClient.GetAsync(url);
 
             if (response.IsSuccessStatusCode)
@@ -306,7 +312,8 @@ namespace Backend_api.Controllers
         public async Task<ActionResult> GetTrabAfecImpuestoRentaAsync()
         {
             var httpClient = new HttpClient();
-            var url = "http://apiservicios.ecuasolmovsa.com:3009/api/Varios/TrabAfecImpuestoRenta";
+            httpClient.BaseAddress = new Uri(_apiUrl);
+            var url = "/api/Varios/TrabAfecImpuestoRenta";
             var response = await httpClient.GetAsync(url);
 
             if (response.IsSuccessStatusCode)
@@ -328,7 +335,7 @@ namespace Backend_api.Controllers
             Console.WriteLine("El valor de codigo es: " + codigomovimiento);
 
             var httpClient = new HttpClient();
-            var response = await httpClient.GetAsync($"http://apiservicios.ecuasolmovsa.com:3009/api/Varios/MovimeintoPlanillaDelete?codigomovimiento={codigomovimiento}&descripcionomovimiento={descripcionomovimiento}");
+            var response = await httpClient.GetAsync($"{_apiUrl}/api/Varios/MovimeintoPlanillaDelete?codigomovimiento={codigomovimiento}&descripcionomovimiento={descripcionomovimiento}");
 
             if (response.IsSuccessStatusCode)
             {
@@ -349,7 +356,7 @@ namespace Backend_api.Controllers
             Console.WriteLine("El valor de codigoMovimientoPlanilla es: " + codigoplanilla);
 
             var httpClient = new HttpClient();
-            var response = await httpClient.GetAsync($"http://apiservicios.ecuasolmovsa.com:3009/api/Varios/MovimientoPlanillaUpdate?codigoplanilla={codigoplanilla}&conceptos={conceptos}&prioridad={prioridad}&tipooperacion={tipooperacion}&cuenta1={cuenta1}&cuenta2={cuenta2}&cuenta3={cuenta3}&cuenta4={cuenta4}&MovimientoExcepcion1={MovimientoExcepcion1}&MovimientoExcepcion2={MovimientoExcepcion2}&MovimientoExcepcion3={MovimientoExcepcion3}&Traba_Aplica_iess={Traba_Aplica_iess}&Traba_Proyecto_imp_renta={Traba_Proyecto_imp_renta}&Aplica_Proy_Renta={Aplica_Proy_Renta}&Empresa_Afecta_Iess={Empresa_Afecta_Iess}");
+            var response = await httpClient.GetAsync($"{_apiUrl}/api/Varios/MovimientoPlanillaUpdate?codigoplanilla={codigoplanilla}&conceptos={conceptos}&prioridad={prioridad}&tipooperacion={tipooperacion}&cuenta1={cuenta1}&cuenta2={cuenta2}&cuenta3={cuenta3}&cuenta4={cuenta4}&MovimientoExcepcion1={MovimientoExcepcion1}&MovimientoExcepcion2={MovimientoExcepcion2}&MovimientoExcepcion3={MovimientoExcepcion3}&Traba_Aplica_iess={Traba_Aplica_iess}&Traba_Proyecto_imp_renta={Traba_Proyecto_imp_renta}&Aplica_Proy_Renta={Aplica_Proy_Renta}&Empresa_Afecta_Iess={Empresa_Afecta_Iess}");
 
             if (response.IsSuccessStatusCode)
             {
@@ -370,7 +377,7 @@ namespace Backend_api.Controllers
             Console.WriteLine("El valor de descripcion es: " + concepto);
 
             var httpClient = new HttpClient();
-            var response = await httpClient.GetAsync($"http://apiservicios.ecuasolmovsa.com:3009/api/Varios/MovimientoPlanillaSearch?Concepto={concepto}");
+            var response = await httpClient.GetAsync($"{_apiUrl}/api/Varios/MovimientoPlanillaSearch?Concepto={concepto}");
 
             if (response.IsSuccessStatusCode)
             {
