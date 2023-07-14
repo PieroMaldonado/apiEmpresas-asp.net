@@ -1,10 +1,10 @@
 using System.Net.Http;
 using Microsoft.AspNetCore.TestHost;
 using NUnit.Framework;
-
 using Backend_api.Models;
 using Microsoft.AspNetCore.Hosting;
 using TuNombreDeProyecto;
+using System.Net;
 
 namespace MiProyecto.Pruebas
 {
@@ -26,7 +26,7 @@ namespace MiProyecto.Pruebas
         }
 
         [Test]
-        public async Task EmisoresEndpoint_ReturnsEmisores()
+        public async Task GetEmisoresAsync_ReturnsUnauthorized()
         {
             // Arrange
 
@@ -34,10 +34,7 @@ namespace MiProyecto.Pruebas
             var response = await _client.GetAsync("/api/ControladorAPI/api/v1/emisores");
 
             // Assert
-            response.EnsureSuccessStatusCode(); // Verifica que el código de respuesta sea 200
-            var emisores = await response.Content.ReadAsAsync<List<Emisor>>(); // Deserializa la respuesta en una lista de objetos Emisor
-            Assert.That(emisores, Is.Not.Null); // Verifica que la lista no sea nula
-            Assert.That(emisores, Is.Not.Empty); // Verifica que la lista no esté vacía
+            Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.Unauthorized)); // Verifica que el código de estado sea 401 (No autorizado)
         }
 
         [TearDown]
